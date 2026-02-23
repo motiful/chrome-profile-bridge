@@ -63,7 +63,7 @@ Claude Code
 **Option B: Manual**
 ```bash
 # Install the skill
-cp -r skills/chrome-profile-bridge ~/.claude/skills/
+cp -r skill ~/.claude/skills/chrome-profile-bridge
 
 # Install the pw wrapper
 cp scripts/pw ~/.local/bin/pw
