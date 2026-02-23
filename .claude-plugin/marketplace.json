@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "chrome-profile-bridge",
-      "source": "./skills/chrome-profile-bridge",
+      "source": "./skill",
       "description": "Chrome profile targeting for playwright-cli. Control specific Chrome profiles with existing login state — no MCP, no site restrictions.",
       "version": "1.0.0",
       "author": {
