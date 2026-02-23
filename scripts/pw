@@ -1,0 +1,57 @@
+#!/bin/bash
+# pw - Playwright CLI wrapper that targets a specific Chrome profile
+#
+# Adds --pw-profile flag to playwright-cli for Chrome profile targeting.
+# Requires: @playwright/cli, Playwright MCP Bridge Chrome extension.
+#
+# Usage:
+#   pw open --extension                            # Opens in default profile
+#   pw open --extension --pw-profile="Profile 1"   # Opens in specific profile
+#   pw list-profiles                               # List all Chrome profiles
+#   pw <any playwright-cli command>                # Pass through to playwright-cli
+#
+# Installation:
+#   cp pw ~/.local/bin/pw && chmod +x ~/.local/bin/pw
+#
+# The --pw-profile flag is consumed by this wrapper and NOT passed to playwright-cli.
+
+# macOS Chrome path (adjust for your OS)
+CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+DEFAULT_PROFILE="Default"
+
+# Handle list-profiles command
+if [[ "$1" == "list-profiles" ]]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
+    LOCAL_STATE="$HOME/Library/Application Support/Google/Chrome/Local State"
+  else
+    LOCAL_STATE="$HOME/.config/google-chrome/Local State"
+  fi
+  python3 -c "
+import json, sys
+with open(sys.argv[1]) as f:
+    data = json.load(f)
+for key, val in data.get('profile', {}).get('info_cache', {}).items():
+    print(f'  {key}: {val.get(\"name\", \"unknown\")}')
+" "$LOCAL_STATE"
+  exit 0
+fi
+
+# Extract --pw-profile if present
+PROFILE="$DEFAULT_PROFILE"
+ARGS=()
+for arg in "$@"; do
+  if [[ "$arg" == --pw-profile=* ]]; then
+    PROFILE="${arg#--pw-profile=}"
+  else
+    ARGS+=("$arg")
+  fi
+done
+
+# If "open --extension" is in the args, focus the target profile first
+if [[ " ${ARGS[*]} " == *" open "* ]] && [[ " ${ARGS[*]} " == *" --extension"* ]]; then
+  "$CHROME" --profile-directory="$PROFILE" "about:blank" &>/dev/null &
+  sleep 1
+fi
+
+# Pass through to playwright-cli
+exec playwright-cli "${ARGS[@]}"
