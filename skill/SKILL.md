@@ -79,6 +79,7 @@ Browser automation involves multiple sub-problems (finding URLs, reading pages, 
 When using Chrome profiles, cleanup is especially important — leftover tabs persist across sessions since profiles are real user data.
 
 - **Close all task-related tabs before finishing.** Profile tabs survive after `playwright-cli close`. Audit with `tab-list` and close each one.
+- **Extension bridge sessions are isolated.** Each `pw open --extension` creates a new browser window. `tab-list` and `tab-close` only affect tabs in THAT window. Tabs from a previous session (killed or disconnected) become orphaned — only closable manually in Chrome. **Always close all opened tabs before `playwright-cli close`. There is no way to retroactively clean up another session's tabs.**
 - **Clean temp files** after each task: `rm -rf .playwright-cli/*`
 - See the **Browser Hygiene** section in `playwright-cli` skill for full details.
 
