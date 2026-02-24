@@ -68,6 +68,12 @@ playwright-cli screenshot --filename=result.png
 playwright-cli close
 ```
 
+## Tool Selection Note
+
+Browser automation involves multiple sub-problems (finding URLs, reading pages, filling forms, checking state). Each has a best-fit tool. See the **Tool Selection Strategy** section in the `playwright-cli` skill for detailed guidance. Key takeaway: don't path-depend on one approach — match each step to the right tool.
+
+---
+
 ## Troubleshooting
 
 - **ERR_BLOCKED_BY_CLIENT**: Extension not installed in target profile. Install from Chrome Web Store.
