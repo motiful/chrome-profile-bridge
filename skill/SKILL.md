@@ -74,6 +74,16 @@ Browser automation involves multiple sub-problems (finding URLs, reading pages, 
 
 ---
 
+## Browser Hygiene
+
+When using Chrome profiles, cleanup is especially important — leftover tabs persist across sessions since profiles are real user data.
+
+- **Close all task-related tabs before finishing.** Profile tabs survive after `playwright-cli close`. Audit with `tab-list` and close each one.
+- **Clean temp files** after each task: `rm -rf .playwright-cli/*`
+- See the **Browser Hygiene** section in `playwright-cli` skill for full details.
+
+---
+
 ## Troubleshooting
 
 - **ERR_BLOCKED_BY_CLIENT**: Extension not installed in target profile. Install from Chrome Web Store.
